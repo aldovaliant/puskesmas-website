@@ -1,0 +1,96 @@
+.timeline {
+  position: relative;
+  padding: 1em 0;
+  // margin-top: 2em;
+  // margin-bottom: 2em;
+  margin: auto;
+  background-color: #8dbdd8;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 18px;
+    height: 100%;
+    width: 4px;
+    background: #d7e4ed;
+  }
+
+  .timeline-block {
+    position: relative;
+    margin: 0;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &.header {
+      color: black;
+      // position: relative;
+      margin-left: 60px;
+    }
+
+    &.step {
+      .step-symbol {
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        box-shadow: 0 0 0 4px white, inset 0 2px 0 rgba(0, 0, 0, 0.08),
+          0 3px 0 4px rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        background: black;
+      }
+
+      .step-title {
+        color: white;
+        height: 40px;
+        margin-left: 45px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        font-size: 25px;
+      }
+
+      .step-instructions {
+        margin: 5px 5px 5px 45px;
+        padding: 10px;
+        background: linear-gradient(
+          10deg,
+          rgba(255, 255, 255, 0.7) 0%,
+          rgba(255, 255, 255, 0.1) 100%
+        );
+        border-radius: 5px;
+      }
+    }
+  }
+}
+
+.recipe-name {
+  text-shadow: 1px 1px 0 #c0392b, 2px 2px 0 #c0392b, 3px 3px 0 #c0392b,
+    4px 4px 0 #c0392b, 5px 5px 0 #c0392b, 6px 6px 0 #c0392b, 7px 7px 0 #c0392b;
+  font-size: 50px;
+  font-family: "Pattaya", "Helvetica", sans-serif;
+}
+
+body {
+  box-sizing: border-box;
+  // background: #8dbdd8;
+}
+
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
+}

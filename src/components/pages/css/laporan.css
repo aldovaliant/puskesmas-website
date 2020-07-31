@@ -1,0 +1,138 @@
+body {
+  overflow-y: hidden;
+}
+#list {
+  width: 65%;
+  float: left;
+  background-color: lightgray;
+}
+#map {
+  width: 35%;
+  height: 100%;
+  margin-left: 65%;
+  float: right;
+  position: fixed;
+}
+#filter {
+  margin-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+#filter-date {
+  width: 130px;
+  font-size: 12px;
+  padding: 5px;
+  margin: 8px;
+  border-color: black;
+  border-radius: 0px;
+}
+#filter label {
+  margin-left: 3px;
+}
+#filter select {
+  height: 37px;
+  margin-left: 3px;
+}
+.search-container {
+  float: right;
+}
+.search-container input[type="text"] {
+  padding: 6px;
+  margin-top: 8px;
+  font-size: 17px;
+  border: none;
+  border-radius: 0px;
+  margin-right: 0px;
+  height: 37px;
+  width: 170px;
+  background-color: white;
+}
+.search-container button {
+  float: right;
+  padding: 6px 10px;
+  margin-top: 8px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+#list-laporan h6 {
+  color: black;
+  text-align: left;
+  padding: 0px;
+  width: 150px;
+}
+#container-laporan {
+  height: 555px;
+  overflow-y: scroll;
+}
+.laporan-card {
+  margin-top: 5px;
+  padding-top: 5px;
+  background-color: white;
+}
+.laporan-card span {
+  margin-left: 5px;
+}
+.laporan-card img {
+  height: 110px;
+  width: 110px;
+  float: right;
+  margin-top: 3px;
+  margin-bottom: 5px;
+}
+
+#id01 {
+  height: 100%;
+  /* overflow: hidden; */
+}
+
+#id02 {
+  height: 98%;
+  width: 98%;
+  margin-top: -80px;
+}
+
+#containerAtas {
+  height: 70%;
+  background-color: white;
+}
+
+#w3Map {
+  margin-left: -5px;
+}
+
+#w3Laporan {
+  margin-left: 5px;
+}
+
+#containerBawah {
+  height: 40%;
+  background-color: whitesmoke;
+}
+
+.w3-half {
+  margin-top: 10px;
+}
+
+div.gallery {
+  margin: 5px;
+  border: 1px solid #ccc;
+  float: right;
+  width: 180px;
+  margin-top: 20px;
+  margin-right: 50px;
+}
+
+div.gallery:hover {
+  border: 1px solid #777;
+}
+
+div.gallery img {
+  width: 100%;
+  height: auto;
+  margin-top: 0;
+}
+
+
