@@ -20,7 +20,7 @@ export default class modalTambahUser extends Component {
         let nama = document.getElementById('nama').value;
         let username = document.getElementById('username').value;
         let password = document.getElementById('password').value;
-        fetch('https://cors-anywhere.herokuapp.com/http://my-rest-api.000webhostapp.com/puskesmas-api/index.php/user/', {
+        fetch('https://cors-anywhere.herokuapp.com/https://ciumbuleuit-puskesmas.000webhostapp.com/index.php/user/', {
             crossDomain: true,
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

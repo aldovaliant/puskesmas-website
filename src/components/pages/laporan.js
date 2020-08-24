@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/alt-text */
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import { compose, withProps, withStateHandlers  } from "recompose";
 import Navbar from './features/navbar';
-import Map from './features/map';
+// import Map from './features/map';
 import MapModal from './features/map2';
 import {
     withScriptjs,
@@ -11,8 +11,9 @@ import {
     Marker,
     InfoWindow
 } from "react-google-maps";
-import './css/laporan.css';
+import './css/laporan.scss';
 import './css/fontawesome/css/all.css'
+import { DropdownButton, Dropdown, Modal, Button, Carousel } from "react-bootstrap"
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 const MapWithAMakredInfoWindow = compose(
@@ -60,13 +61,32 @@ export default class laporan extends Component {
             chosenImage: 0,
             list:[],
             coordinates: { lat: -6.867465, lng: 107.608380 },
-            limiterList: 0
+            limiterList: 0,
+            show: false,
+            pageNumber: 1,
+            pageNumber2: 1,
+            jumlahPage: 1
         }
         console.log(this.state.list);
         this.showModal = this.showModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.prevNextList = this.prevNextList.bind(this);
+        this.changeStatus = this.changeStatus.bind(this);
+        this.searchLaporan = this.searchLaporan.bind(this);
+        this.handleShow = this.handleShow.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     };
+
+    // Example() {
+    //     const [show, setShow] = useState(false);
+      
+    //     const handleClose = () => setShow(false);
+    //     const handleShow = () => setShow(true);
+    // }
+
+    handleClose = () => {this.setState({show: false})};
+    handleShow = () => {this.setState({show: true})};
+
 
     showModal = (i) => {
         document.getElementById('id01').style.display='block';  
@@ -84,15 +104,50 @@ export default class laporan extends Component {
     };
 
     prevNextList = (value) => {
-        if(value == true) {
-            this.state.limiterList += 5;
-            this.componentDidMount()
+        if(value == true && this.state.jumlahPage != 0) {
+            // this.state.limiterList += 5;
+            this.state.pageNumber += 1;
+            this.componentDidMount();
+        }else if(value == false && this.state.pageNumber != 1){
+            // this.state.limiterList -= 5;
+            this.state.pageNumber -= 1;
+            this.componentDidMount();
+        } 
+    };
+
+    changeStatus(stat, i){
+        // document.getElementById("status").innerHTML="Status: ";
+        if(stat == 1){
+            this.state.status[i] = "Akan ditindak";
+            console.log(this.state.status[i]);
+        }else if(stat == 2){
+            this.state.status[i] = "Ditindak";
         }else{
-            if(this.state.limiterList != 0){
-                this.state.limiterList -= 5;
-                this.componentDidMount()
-            }
-        }   
+            this.state.status[i] = "Selesai";
+        }
+    };
+
+    searchLaporan() {
+        var startDate = document.getElementById("filter-date-start").value;
+        var endDate = document.getElementById("filter-date-end").value;
+        var inputText = document.getElementById("search").value;
+
+        if((startDate == "" || endDate == "") && inputText ==""){    
+            alert("Tolong isi seluruh pencarian!");
+            console.log("gagal");
+        }else if(startDate == "" || endDate == ""){
+            console.log("search: " + inputText); 
+        }else if(inputText ==""){
+            console.log("start: " + startDate);
+            console.log("end: " + endDate);
+        }else{
+            console.log("gagal");
+        } 
+    };
+
+    dataToChild() {
+        console.log("datachild22: "+this.state.pageNumber2);
+        return this.state.pageNumber2;
     }
 
     componentDidMount() {
@@ -107,7 +162,15 @@ export default class laporan extends Component {
         var images = []; 
         var temptLatitude = [];
         var temptLongitude = [];
-        var link = "http://my-rest-api.000webhostapp.com/puskesmas-api/index.php/laporan";
+
+        var link2 = "https://ciumbuleuit-puskesmas.000webhostapp.com/index.php/laporan?hal="+ (this.state.pageNumber + 1);
+        fetch(link2)
+        .then(res => res.json())
+        .then((res) => {
+            this.state.jumlahPage = res.length;
+        });
+
+        var link = "https://ciumbuleuit-puskesmas.000webhostapp.com/index.php/laporan?hal="+this.state.pageNumber;
         fetch(link)
         .then(res => res.json())
         .then((res) => {
@@ -118,16 +181,18 @@ export default class laporan extends Component {
                 temptTanggal[i] = res[i].tanggal;
                 temptJenisLaporan[i] = res[i].nama_jenis_penyakit;
                 temptTingkatBahaya[i] = res[i].tingkat_bahaya;
-                temptStatus[i] = res[i].status_laporan;
-                temptDeskripsi[i] = res[i].deskripsi;
+                temptStatus[i] = res[i].status;
+                temptDeskripsi[i] = res[i].nama_laporan;
                 images[i] = res[i].link_gambar;
                 temptLatitude[i] = res[i].latitude;
                 temptLongitude[i] = res[i].longitude;
                 this.state.list[i] = {lat: res[i].latitude * 1.0, lng: res[i].longitude * 1.0};
+                this.state.pageNumber2 = this.state.pageNumber;
+                console.log("datachild2: "+this.state.pageNumber2);
             };
             console.log(this.state.list)
             this.state.counter = res.length;
-            console.log("counter: "  + this.state.counter)
+            console.log(res)
             this.setState({
                 idLaporan: tempIdLaporan,
                 nama: temptNama,
@@ -141,17 +206,20 @@ export default class laporan extends Component {
                 latitude: temptLatitude,
                 longitude: temptLongitude
             });
+            // this.dataToChild();
         });
     };
 
     createDivContainer = () => {
         let res = [];
-        var limiter = this.state.limiterList;
-        var ctr = 5;
-        ctr += limiter
-        console.log(ctr)
-        for (let i = 0 + limiter; i < ctr ; i++) {
-            res.push(this.createDivList(i + limiter));
+        // var limiter = this.state.limiterList;
+        // var ctr = 5;
+        var ctr = this.state.idLaporan.length
+        // ctr += limiter
+        // console.log("limiter: " + limiter);
+        console.log("ctr: " + ctr);
+        for (let i = 0; i < ctr ; i++) {
+            res.push(this.createDivList(i));
         };
         return res;
     };
@@ -182,8 +250,8 @@ export default class laporan extends Component {
                 <div id="list">
 
                     <div id="filter">
-                        Tanggal:<input type="date" id="filter-date" name="start" />
-                        s.d<input type="date" id="filter-date" name="end" />
+                        Tanggal:<input type="date" className="filter-date" id="filter-date-start" name="start" value="2000-05-05" />
+                        s.d<input type="date" className="filter-date" id="filter-date-end" name="end" />
                         <label for="jenis-laporan">Jenis Laporan:</label>
                         <select id="jenis-laporan" placeholder="jenis laporan">
                             <option value="bahaya">Bahaya</option>
@@ -192,8 +260,8 @@ export default class laporan extends Component {
                         </select>
 
                         <div class="search-container">
-                            <input type="text" placeholder="Search.." name="search" />
-                            <button type="submit"><i class="fa fa-search"></i></button>
+                            <input type="text" placeholder="Search.." id="search" />
+                            <button type="submit" onClick={this.searchLaporan}><i class="fa fa-search"></i></button>
                         </div>
                     </div>
 
@@ -201,21 +269,24 @@ export default class laporan extends Component {
                         <div id="container-laporan" class="w3-container">
                             {this.createDivContainer()}
                             <div class="laporan-card w3-panel w3-card">
-                               <button style={{float: "left"}} onClick={() => this.prevNextList(false)}>prev</button>
-                               <button style={{float: "right"}} onClick={() => this.prevNextList(true)}>next</button>
+                               <Button style={{float: "left", marginBottom: "3px"}} onClick={() => this.prevNextList(false)}>
+                                <i className="fa fa-chevron-left"/></Button>
+                               <Button style={{float: "right", marginBottom: "3px"}} onClick={() => this.prevNextList(true)}>
+                               <i className="fa fa-chevron-right"/></Button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div id="map">
-                    <MapModal/>
+                    <MapModal dataFromParent = {this.dataToChild()}/>
                 </div> 
 
                 {/* Modal Open */}
                 <div id="id01" class="w3-modal">
                     <div id="id02" class="w3-modal-content">
                         <div>
-                            <button style={{ float: "right", margin: "5px", color: "red" }} onClick={this.closeModal}><i className="w3-xlarge fa fa-window-close"></i></button>
+                            <button style={{ float: "right", margin: "5px", color: "red" }} 
+                            onClick={this.closeModal}><i className="w3-xlarge fa fa-window-close"></i></button>
                         </div>
                         <hr/>
                         <div id="containerAtas" class="w3-container">
@@ -233,7 +304,12 @@ export default class laporan extends Component {
                                 </div>
                             </div>
                             <div id="w3Laporan" class="w3-half">
-                                <button style={{float: "right"}}>Ubah Status</button>
+                                {/* <button style={{float: "right"}} onClick={this.changeStatus}>Ubah Status</button> */}
+                                <DropdownButton id="dropdown-basic-button" style={{float: "right"}} title="Ganti Status">
+                                    <Dropdown.Item onClick={this.changeStatus(1, this.state.chosenImage)}>Akan ditindak</Dropdown.Item>
+                                    <Dropdown.Item onClick={this.changeStatus(2, this.state.chosenImage)}>Ditangani</Dropdown.Item>
+                                    <Dropdown.Item onClick={this.changeStatus(3, this.state.chosenImage)}>Selesai</Dropdown.Item>
+                                </DropdownButton>
                                 <h3>Status: {this.state.status[this.state.chosenImage]}</h3><br/>
                                 <h3>Tanggal: {this.state.tanggal[this.state.chosenImage]}</h3><br/>
                                 <h3>Nama: {this.state.nama[this.state.chosenImage]}</h3><br/>
@@ -247,13 +323,23 @@ export default class laporan extends Component {
 
                         <div id="containerBawah" class="w3-container">
                             <div class="gallery">
-                                <img src={this.state.Img[this.state.chosenImage]} width="600" height="400"/>
+                                <img src={this.state.Img[this.state.chosenImage]} onClick={this.handleShow} width="600" height="400"/>
                             </div>
                         </div>
 
                     </div>
                 </div>
                 {/* Modal End */}
+
+                <Modal show={this.state.show} onHide={this.handleClose} style={{ marginTop: "50px", marginLeft: "150px"}}>
+                    <Modal.Body>
+                        <Carousel>
+                            <Carousel.Item>
+                                <img src={this.state.Img[this.state.chosenImage]} onClick={this.handleShow} width="100%" height="100%"/>
+                            </Carousel.Item>
+                        </Carousel>
+                    </Modal.Body>
+                </Modal>
             </div>
             )
         }

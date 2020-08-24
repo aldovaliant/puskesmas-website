@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Modal, Button} from 'react-bootstrap';
-import './css/modalEditUser.css';
+import './css/modalEditUser.scss';
 
 var nama,username,password,id;
 export default class modalEditUser extends Component {
@@ -22,7 +22,7 @@ export default class modalEditUser extends Component {
     }
 
     editUser(){
-        fetch('https://cors-anywhere.herokuapp.com/http://my-rest-api.000webhostapp.com/puskesmas-api/index.php/user/', {
+        fetch('https://cors-anywhere.herokuapp.com/https://ciumbuleuit-puskesmas.000webhostapp.com/index.php/user/', {
             crossDomain: true,
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },

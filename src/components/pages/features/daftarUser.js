@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 // import { Link } from 'react-router-dom'
 // import { Button, Modal } from 'react-bootstrap';
-import './css/daftarUser.css'
+import './css/daftarUser.scss'
 import '../css/fontawesome/css/all.css'
-import avatar1 from '../../assets/images/avatar1.jpg';
-import avatar2 from '../../assets/images/avatar2.png';
-import avatar3 from '../../assets/images/avatar3.jpg';
-// import avatar4 from '../../assets/images/avatar4.jpg';
-// import avatar5 from '../../assets/images/avatar5.png';
+import avatar1 from '../../Assets/Images/avatar1.jpg';
+import avatar2 from '../../Assets/Images/avatar2.png';
+import avatar3 from '../../Assets/Images/avatar3.jpg';
+// import avatar4 from '../../Assets/Images/avatar4.jpg';
+// import avatar5 from '../../Assets/Images/avatar5.png';
 import ModalTambahUser from './modalTambahUser';
 import ModalEditUser from './modalEditUser';
 // import PropTypes from "prop-types";
@@ -39,7 +39,7 @@ export default class daftarUser extends Component {
         var temptIdUser = [];
         var temptNama = [];
         var temptLastLogin = [];
-        var link = "https://webistepuskesmas.000webhostapp.com/mysql-ci-restAPI/index.php/user/";
+        var link = "https://ciumbuleuit-puskesmas.000webhostapp.com/index.php/user/";
         fetch(link)
         .then(res => res.json())
         .then((res) => {
