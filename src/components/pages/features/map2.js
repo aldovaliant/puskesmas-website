@@ -14,20 +14,19 @@ const MapWithAMarker = compose(withScriptjs, withGoogleMap)(props => {
     <GoogleMap defaultZoom={12} defaultCenter={{ lat: -6.867465, lng: 107.608380 }}>
       {props.markers.map(marker => {
         const onClick = props.onClick.bind(this, marker)
-        {console.log(marker)}
+        {console.log(marker.id)}
         return (
           <Marker
             key={marker.id}
             onClick={onClick}
             position={{ lat: marker.latitude, lng: marker.longitude }}
           >
-            {props.selectedMarker === marker &&
+            {/* {props.selectedMarker === marker &&
               <InfoWindow>
                 <div>
                   {marker.shelter}
                 </div>
-              </InfoWindow>}
-            }
+              </InfoWindow>} */}
           </Marker>
         )
       })}
@@ -40,18 +39,28 @@ class map extends React.PureComponent {
     super(props)
     this.state = {
       shelters: [],
-      selectedMarker: false
+      shelters2: [],
+      selectedMarker: false,
+      gg: 1
     }
   }
+
+  componentDidUpdate(){
+    this.state.gg = this.props.dataFromParent;
+    console.log("datafromparent: " + this.state.gg);
+    this.componentDidMount();
+  };
+  
   componentDidMount() {
-    fetch("http://my-rest-api.000webhostapp.com/puskesmas-api/index.php/laporan")
+    console.log("datafromparent: " + this.props.dataFromParent);
+    fetch("https://ciumbuleuit-puskesmas.000webhostapp.com/index.php/laporan?hal=" + this.state.gg)
       .then(res => res.json())
       .then(res => {
         for(var i=0; i<res.length; i++){
-          this.state.shelters[i] = {latitude: res[i].latitude * 1.0, longitude: res[i].longitude * 1.0};
+          this.state.shelters[i] = ({id: res[i].id_laporan * 1, latitude: res[i].latitude * 1.0, longitude: res[i].longitude * 1.0});
         }
+        this.setState({ shelters2: this.state.shelters})
       })
-    console.log(this.state.shelters)
   };
   handleClick = (marker) => {
     this.setState({ selectedMarker: marker })

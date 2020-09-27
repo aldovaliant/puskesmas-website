@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 import Navbar from './features/navbar';
 import Map from './features/map';
 import Map2 from './features/map2';
-import './css/dashboard.css';
+import './css/dashboard.scss';
 import './css/timeline.scss';
-import rumah from '../assets/images/rumah.jpeg';
+import { Container, Row, Col, Button, Badge } from 'react-bootstrap';
 
 export default class dashboard extends Component {
     constructor(props) {
@@ -27,20 +27,17 @@ export default class dashboard extends Component {
         var temptJenisLaporan = [];
         var temptTingkatBahaya = [];
         var images = []; 
-        // var temptLatitude = [];
-        // var temptLongitude = [];
-        var link = "http://my-rest-api.000webhostapp.com/puskesmas-api/index.php/laporan/top5";
+        var link = "https://ciumbuleuit-puskesmas.000webhostapp.com/index.php/laporan/top5";
         fetch(link)
         .then(res => res.json())
         .then((res) => {
-            for(var i=0; i<res.laporan.length; i++){
-                tempIdLaporan[i] = res.laporan[i].id_laporan;
-                temptNama[i] = res.laporan[i].nama;
-                temptJenisLaporan[i] = res.laporan[i].nama_jenis_penyakit;
-                temptTingkatBahaya[i] = res.laporan[i].tingkat_bahaya;
-                images[i] = res.laporan[i].link_gambar;
-                // temptLatitude[i] = res.laporan[i].latitude;
-                // temptLongitude[i] = res.laporan[i].longitude;
+            for(var i=0; i<res.length; i++){
+                tempIdLaporan[i] = res[i].id_laporan;
+                temptNama[i] = res[i].nama;
+                temptJenisLaporan[i] = res[i].nama_jenis_penyakit;
+                temptTingkatBahaya[i] = res[i].tingkat_bahaya;
+                images[i] = res[i].link_gambar;
+
             };
             this.setState({
                 idLaporan: tempIdLaporan,
@@ -48,8 +45,6 @@ export default class dashboard extends Component {
                 jenisLaporan: temptJenisLaporan,
                 tingkatBahaya:  temptTingkatBahaya,
                 Img: images,
-                // latitude: temptLatitude,
-                // longitude: temptLongitude
             });
         });
     };
@@ -81,43 +76,48 @@ export default class dashboard extends Component {
 
     render() {
         return (
-            <div>
+            <div> 
                 <Navbar activeNavbar="dashboard" />
-                <div class="">
-                    <div class="map w3-third">
+                <Container fluid>
+                <Row style={{marginBottom: "40px"}}>
+                    <Col lg={true} style={{marginTop: "15px"}}>
                         <Map2 />
-                    </div>
-                    <div class="top5  w3-third">
+                    </Col>
+                    <Col lg={true}>
                         <h1 id="top5Title">Top 5 Laporan</h1>
-                        <ul class="w3-ul w3-card-4">
+                        <ul class="w3-ul w3-card-4" style={{marginTop:"-8px"}}>
                             {this.createDivContainer()}
                             <li class="w3-bar">
                                 <Link to='/Laporan'>
-                                    <span class="w3-bar-item w3-button w3-xlarge w3-right w3-border w3-green">
-                                        Lihat seluruh laporan >
-                                    </span>
+                                    {/* <span class="w3-bar-item w3-button w3-xlarge w3-right w3-border w3-green"> */}
+                                    <Button variant="success" size="lg" style={{float: "right"}}>
+                                        Lihat seluruh laporan 
+                                    </Button>
+                                    {/* </span> */}
                                 </Link>
                             </li>
                         </ul>
-                    </div>
-                </div>
-                <div class="TL w3-third">
-                    <div class="timeline">
-                        <div class="timeline-block header">
-                            <h2>Timeline</h2>
+                    </Col>
+                    <Col lg={true} style={{marginTop: "15px"}}>
+                        <div class="timeline">
+                            <div class="timeline-block header">
+                                <h2>Timeline</h2>
+                            </div>
+                            <div class="timeline-block step">
+                                <div class="step-symbol"></div>
+                                <div class="step-title">Jumat, 06/03/20</div>
+                                <div class="step-instructions">Tercatat 5 laporan<br />3 laporan suspect COVID-19</div>
+                            </div>
+                            <div class="timeline-block step">
+                                <div class="step-symbol"></div>
+                                <div class="step-title">Kamis, 05/03/20</div>
+                                <div class="step-instructions">Tercatat 3 laporan<br />1 laporan suspect COVID-19</div>
+                            </div>
                         </div>
-                        <div class="timeline-block step">
-                            <div class="step-symbol"></div>
-                            <div class="step-title">Jumat, 06/03/20</div>
-                            <div class="step-instructions">Tercatat 5 laporan<br />3 laporan suspect COVID-19</div>
-                        </div>
-                        <div class="timeline-block step">
-                            <div class="step-symbol"></div>
-                            <div class="step-title">Kamis, 05/03/20</div>
-                            <div class="step-instructions">Tercatat 3 laporan<br />1 laporan suspect COVID-19</div>
-                        </div>
-                    </div>
-                </div>
+                    </Col>
+                </Row>
+                <Row><Col><div style={{backgroundColor: "white"}}></div></Col></Row>
+                </Container>
             </div>
         )
     }

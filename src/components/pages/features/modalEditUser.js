@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Modal, Button} from 'react-bootstrap';
-import './css/modalEditUser.css';
+import './css/modalEditUser.scss';
 
 var nama,username,password,id;
 export default class modalEditUser extends Component {
