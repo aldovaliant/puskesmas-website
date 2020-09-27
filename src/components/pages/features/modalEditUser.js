@@ -15,23 +15,27 @@ export default class modalEditUser extends Component {
     }
 
     componentDidUpdate(){
-        nama = this.props.nama;
-        username = this.props.username;
-        password = this.props.password;
+    //     nama = this.props.nama;
+    //     username = this.props.username;
+    //     password = this.props.password;
         id = this.props.id;
     }
 
     editUser(){
-        fetch('https://cors-anywhere.herokuapp.com/http://my-rest-api.000webhostapp.com/puskesmas-api/index.php/user/', {
-            crossDomain: true,
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                "nama": nama,
-                "username": username,
-                "password": '',
-                "id": id
-            })
+        let nama = document.getElementById('nama').value;
+        let username = document.getElementById('username').value;
+        let password = document.getElementById('password').value;
+        let link = 'https://ciumbuleuit-puskesmas.000webhostapp.com/index.php/user/update';
+        let param = '?id=' + id + '&nama=' + nama + '&username=' + username + '&password=' + password;  
+        fetch(link + param, {
+            // crossDomain: true,
+            method: 'GET',
+            // headers: { 'Content-Type': 'application/json' },
+            // body: JSON.stringify({
+            //     "nama": nama,
+            //     "username": username,
+            //     "password": password,
+            // })
         })
             .then((response) => response.json())
             .then((res) => {
@@ -40,6 +44,7 @@ export default class modalEditUser extends Component {
                 document.getElementById('username').value = '';
                 document.getElementById('password').value = '';
                 alert(res.message);
+                window.location.reload(false);
             })
             .catch((error) => {
                 console.error(error);
@@ -54,24 +59,32 @@ export default class modalEditUser extends Component {
                     size="lg"
                     aria-labelledby="contained-modal-title-vcenter"
                     centered
-                    style={{ width: '1000px', marginLeft: '125px'}}
+                    style={{ width: '1000px', marginLeft: '125px', marginTop: '50px'}}
                     className="w3-display-center"
                 >
                     <Modal.Header closeButton>
                         <Modal.Title id="contained-modal-title-vcenter">
-                            <h2>
+                            <h3>
                                 {this.props.children}
-                            </h2>
+                            </h3>
                 </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <form className="modal-edit">
-                            <label for="nama">Nama :</label><br />
-                            <input type="text" id="nama" className="form-control" name="nama" placeholder={this.props.nama} ></input><br />
-                            <label for="username">Username :</label><br />
-                            <input type="text" id="username" className="form-control" name="username" placeholder={this.props.username}></input><br />
-                            <label for="password">New Password :</label><br />
-                            <input type="password" id="password" className="form-control" name="password" placeholder={this.props.password}></input>
+                            <p>Nama Lama : {this.props.nama} </p>
+                            <label for="nama">Nama Baru :</label><br />
+                            <input type="text" id="nama" className="form-control" name="nama" placeholder='Nama...' ></input><br />
+                            <p>Username Lama : {this.props.username} </p>
+                            <label for="username">Username Baru :</label><br />
+                            <input type="text" id="username" className="form-control" name="username" placeholder='Username...'></input><br />
+                            <p>No. Telp Lama : {this.props.no_telp} </p>
+                            <label for="username">No. Telp Baru :</label><br />
+                            <input type="text" id="no_telp" className="form-control" name="no_telp" placeholder='No.Telp...'></input><br />
+                            <p>Alamat Lama : {this.props.alamat} </p>
+                            <label for="username">Alamat Baru :</label><br />
+                            <input type="text" id="alamat" className="form-control" name="alamat" placeholder='Alamat...'></input><br />
+                            <label for="password">Password Baru :</label><br />
+                            <input type="password" id="password" className="form-control" name="password" ></input>
                         </form>
                     </Modal.Body>
                     <Modal.Footer>

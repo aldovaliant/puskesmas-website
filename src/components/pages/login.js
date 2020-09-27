@@ -23,12 +23,12 @@ export default class login extends Component {
     login() {
         var reqBody = '?username=' + this.state.username + '&password=' + this.state.password;
         console.log("coba"+reqBody);
-        var link = "https://webistepuskesmas.000webhostapp.com/mysql-ci-restAPI/index.php/login" + reqBody;
+        var link = "https://ciumbuleuit-puskesmas.000webhostapp.com/index.php/login" + reqBody;
         fetch(link)
         .then(res => res.json())
         .then(res => {
             console.log(res);
-            if ((res.status == 200)) {
+            if ((res.status === 200)) {
             //   alert(res.message);
               this.props.history.push('/Dashboard');
             } else if ((res.status == 204)) {
